@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title>Higher Ed Institution & Legislative Districts Overlay</title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="data/Legislativedistricts_1.js"></script>
+        <script src="data/HigherEdInstitution_2.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[34.066786405360126,-89.9277840785736],[37.33338044237651,-84.17036476227726]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_BasemapOSMStandard_0');
+        map.getPane('pane_BasemapOSMStandard_0').style.zIndex = 400;
+        var layer_BasemapOSMStandard_0 = L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            pane: 'pane_BasemapOSMStandard_0',
+            opacity: 1.0,
+            attribution: '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors, CC-BY-SA</a>',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_BasemapOSMStandard_0;
+        map.addLayer(layer_BasemapOSMStandard_0);
+        function pop_Legislativedistricts_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">District</th>\
+                        <td>' + (feature.properties['District'] !== null ? autolinker.link(feature.properties['District'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Committee_'] !== null ? autolinker.link(feature.properties['Committee_'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Key </th>\
+                        <td>' + (feature.properties['Key_1'] !== null ? autolinker.link(feature.properties['Key_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Postition</th>\
+                        <td>' + (feature.properties['Position_1'] !== null ? autolinker.link(feature.properties['Position_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">First name of representative of the commitee</th>\
+                        <td>' + (feature.properties['First_name'] !== null ? autolinker.link(feature.properties['First_name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Last name of representative of the commitee</th>\
+                        <td>' + (feature.properties['Last_name_'] !== null ? autolinker.link(feature.properties['Last_name_'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Committee 2</th>\
+                        <td>' + (feature.properties['Committee1'] !== null ? autolinker.link(feature.properties['Committee1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Key of Committee 2</th>\
+                        <td>' + (feature.properties['Key_2'] !== null ? autolinker.link(feature.properties['Key_2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Position of Committee 2</th>\
+                        <td>' + (feature.properties['Position_2'] !== null ? autolinker.link(feature.properties['Position_2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">First name of representative of the commitee 2</th>\
+                        <td>' + (feature.properties['First_na_1'] !== null ? autolinker.link(feature.properties['First_na_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Last name of representative of the commitee 2</th>\
+                        <td>' + (feature.properties['Last_name1'] !== null ? autolinker.link(feature.properties['Last_name1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Committee 3</th>\
+                        <td>' + (feature.properties['Committe_1'] !== null ? autolinker.link(feature.properties['Committe_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Key of Committee 3</th>\
+                        <td>' + (feature.properties['Key_3'] !== null ? autolinker.link(feature.properties['Key_3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Position of Committee 2</th>\
+                        <td>' + (feature.properties['Position_3'] !== null ? autolinker.link(feature.properties['Position_3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">First name of representative of the commitee 3</th>\
+                        <td>' + (feature.properties['First_na_2'] !== null ? autolinker.link(feature.properties['First_na_2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Last name of representative of the commitee 3</th>\
+                        <td>' + (feature.properties['Last_nam_1'] !== null ? autolinker.link(feature.properties['Last_nam_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Count of institution in the district</th>\
+                        <td>' + (feature.properties['Join_Count'] !== null ? autolinker.link(feature.properties['Join_Count'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Legislativedistricts_1_0() {
+            return {
+                pane: 'pane_Legislativedistricts_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,255,0.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Legislativedistricts_1');
+        map.getPane('pane_Legislativedistricts_1').style.zIndex = 401;
+        map.getPane('pane_Legislativedistricts_1').style['mix-blend-mode'] = 'normal';
+        var layer_Legislativedistricts_1 = new L.geoJson(json_Legislativedistricts_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Legislativedistricts_1',
+            layerName: 'layer_Legislativedistricts_1',
+            pane: 'pane_Legislativedistricts_1',
+            onEachFeature: pop_Legislativedistricts_1,
+            style: style_Legislativedistricts_1_0,
+        });
+        bounds_group.addLayer(layer_Legislativedistricts_1);
+        map.addLayer(layer_Legislativedistricts_1);
+        function pop_HigherEdInstitution_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Degree type</th>\
+                        <td>' + (feature.properties['USER_Type'] !== null ? autolinker.link(feature.properties['USER_Type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">City</th>\
+                        <td>' + (feature.properties['USER_City'] !== null ? autolinker.link(feature.properties['USER_City'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Institution name</th>\
+                        <td>' + (feature.properties['USER_Schoo'] !== null ? autolinker.link(feature.properties['USER_Schoo'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Adress</th>\
+                        <td>' + (feature.properties['USER_Addre'] !== null ? autolinker.link(feature.properties['USER_Addre'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZIP code</th>\
+                        <td>' + (feature.properties['USER_Zipco'] !== null ? autolinker.link(feature.properties['USER_Zipco'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Degree Type</th>\
+                        <td>' + (feature.properties['USER_Degre'] !== null ? autolinker.link(feature.properties['USER_Degre'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Campus location</th>\
+                        <td>' + (feature.properties['USER_Campu'] !== null ? autolinker.link(feature.properties['USER_Campu'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Students</th>\
+                        <td>' + (feature.properties['USER_Stude'] !== null ? autolinker.link(feature.properties['USER_Stude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Ownership of Inst</th>\
+                        <td>' + (feature.properties['USER_Publi'] !== null ? autolinker.link(feature.properties['USER_Publi'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">School Profile</th>\
+                        <td>' + (feature.properties['USER_Profi'] !== null ? autolinker.link(feature.properties['USER_Profi'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_HigherEdInstitution_2_0(feature) {
+            switch(String(feature.properties['USER_Campu'])) {
+                case 'City':
+                    return {
+                pane: 'pane_HigherEdInstitution_2',
+                radius: 12.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(193,95,215,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Rural':
+                    return {
+                pane: 'pane_HigherEdInstitution_2',
+                radius: 12.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(236,118,118,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Suburb':
+                    return {
+                pane: 'pane_HigherEdInstitution_2',
+                radius: 12.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(14,86,203,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Town':
+                    return {
+                pane: 'pane_HigherEdInstitution_2',
+                radius: 12.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(190,224,53,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Other':
+                    return {
+                pane: 'pane_HigherEdInstitution_2',
+                radius: 12.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(69,224,134,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_HigherEdInstitution_2');
+        map.getPane('pane_HigherEdInstitution_2').style.zIndex = 402;
+        map.getPane('pane_HigherEdInstitution_2').style['mix-blend-mode'] = 'normal';
+        var layer_HigherEdInstitution_2 = new L.geoJson(json_HigherEdInstitution_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_HigherEdInstitution_2',
+            layerName: 'layer_HigherEdInstitution_2',
+            pane: 'pane_HigherEdInstitution_2',
+            onEachFeature: pop_HigherEdInstitution_2,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_HigherEdInstitution_2_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_HigherEdInstitution_2);
+        map.addLayer(layer_HigherEdInstitution_2);
+            var title = new L.Control();
+            title.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'info');
+                this.update();
+                return this._div;
+            };
+            title.update = function () {
+                this._div.innerHTML = '<h2>Higher Ed Institution & Legislative Districts Overlay</h2>';
+            };
+            title.addTo(map);
+        setBounds();
+        </script>
+    </body>
+</html>
